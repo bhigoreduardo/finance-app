@@ -6,9 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:init": "yarn prisma init",
+    "db:migrate": "yarn prisma migrate dev",
+    "db:push": "yarn prisma db push",
+    "db:studio": "yarn prisma studio",
+    "db:reset": "yarn prisma migrate reset",
+    "db:export": "tsx scripts/export.ts",
+    "db:seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
+    "@prisma/client": "6.17.1",
     "next": "16.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8"
@@ -20,6 +28,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "prisma": "6.17.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
