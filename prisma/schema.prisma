@@ -48,9 +48,10 @@ model User {
   name  String
   email String @unique
 
-  status           Boolean  @default(true)
-  hasAcceptedTerms Boolean  @default(true)
-  termsAcceptedAt  DateTime @default(now())
+  status             Boolean  @default(true)
+  hasAcceptedTerms   Boolean  @default(true)
+  termsAcceptedAt    DateTime @default(now())
+  isTwoFactorEnabled Boolean  @default(false)
 
   whatsApp      String?
   password      String?
