@@ -8,7 +8,7 @@ import { useMountedState } from 'react-use'
 import { useCurrentUser } from '@/features/user/authenticate/hooks/use-current-user'
 
 // import { SheetProvider } from '@/app/(main)/_providers/sheet-provider'
-// import { DialogProvider } from '@/app/(main)/_providers/dialog-provider'
+import { DialogProvider } from '@/app/(main)/_providers/dialog-provider'
 
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -46,7 +46,7 @@ function ProtectedLayoutComponent({
   return (
     <>
       {/* <SheetProvider /> */}
-      {/* <DialogProvider /> */}
+      <DialogProvider />
       {children}
     </>
   )
