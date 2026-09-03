@@ -32,11 +32,9 @@ export const TitleMessage = ({ children }: { children: React.ReactNode }) => {
   const { user } = useCurrentUser()
 
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-base font-medium dark:text-white text-zinc-950">
-        Olá, {user?.name} 👋
-      </h3>
-      <p className="text-sm text-white">{children}</p>
+    <div className="flex flex-col gap-2 text-white">
+      <h3 className="text-base font-medium">Olá, {user?.name} 👋</h3>
+      <p className="text-sm">{children}</p>
     </div>
   )
 }

@@ -6,8 +6,9 @@ import authConfig from '@/auth.config'
 
 import commmons from './common'
 
-// import user from './user'
 import authenticate from './authenticate'
+
+import category from './category'
 
 const app = new Hono().basePath('/api')
 
@@ -17,8 +18,9 @@ app.use('*', initAuthConfig(getAuthConfig))
 const routes = app
   .route('/commmons', commmons)
 
-  // .route('/users', user)
   .route('/authenticate', authenticate)
+
+  .route('/categories', category)
 
 // @ts-ignor
 function getAuthConfig(): AuthConfig {

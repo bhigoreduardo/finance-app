@@ -66,6 +66,10 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation?
 
   accounts Account[]
+
+  billings     Billing[]
+  categories   Category[]
+  transactions Transaction[]
 }
 
 model Account {
@@ -88,4 +92,47 @@ model Account {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Billing {
+  id   String @id @default(cuid())
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions Transaction[]
+}
+
+model Category {
+  id   String @id @default(cuid())
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions Transaction[]
+}
+
+model Transaction {
+  id          String    @id @default(cuid())
+  amount      Int
+  description String?
+  dueDate     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  billingId  String?
+  billing    Billing?  @relation(fields: [billingId], references: [id], onDelete: SetNull)
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 }
