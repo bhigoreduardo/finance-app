@@ -10,6 +10,7 @@ import authenticate from './authenticate'
 
 import billing from './billing'
 import category from './category'
+import transaction from './transaction'
 
 const app = new Hono().basePath('/api')
 
@@ -23,6 +24,7 @@ const routes = app
 
   .route('/billings', billing)
   .route('/categories', category)
+  .route('/transactions', transaction)
 
 // @ts-ignor
 function getAuthConfig(): AuthConfig {

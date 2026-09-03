@@ -51,6 +51,8 @@ interface DataTableProps<TData, TValue> {
 
   selectedOptions?: React.ReactNode
   actionOptions?: React.ReactNode
+
+  isNonViewSearch?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -62,6 +64,8 @@ export function DataTable<TData, TValue>({
 
   selectedOptions: SelectedOptions,
   actionOptions: ActionOptions,
+
+  isNonViewSearch = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -97,21 +101,23 @@ export function DataTable<TData, TValue>({
     <SelectedRowsProvider<TData> selectedRows={selectedRows} reset={reset}>
       <div className="w-full flex flex-col gap-2 h-full">
         <div className="flex items-center flex-wrap gap-2 justify-between">
-          <div className="flex flex-col lg:max-w-md grow">
-            <Label className="text-xs text-muted-foreground mb-1 ml-1">
-              Pesquisar
-            </Label>
-            <Input
-              placeholder={`Filtrar por ${placeholder}`}
-              value={
-                (table.getColumn(filterKey)?.getFilterValue() as string) ?? ''
-              }
-              onChange={(event) =>
-                table.getColumn(filterKey)?.setFilterValue(event.target.value)
-              }
-              className="lg:max-w-md w-full"
-            />
-          </div>
+          {!isNonViewSearch && (
+            <div className="flex flex-col lg:max-w-md grow">
+              <Label className="text-xs text-muted-foreground mb-1 ml-1">
+                Pesquisar
+              </Label>
+              <Input
+                placeholder={`Filtrar por ${placeholder}`}
+                value={
+                  (table.getColumn(filterKey)?.getFilterValue() as string) ?? ''
+                }
+                onChange={(event) =>
+                  table.getColumn(filterKey)?.setFilterValue(event.target.value)
+                }
+                className="lg:max-w-md w-full"
+              />
+            </div>
+          )}
 
           <div className="flex items-center gap-2 flex-wrap lg:flex-nowrap ml-auto">
             {SelectedOptions}
