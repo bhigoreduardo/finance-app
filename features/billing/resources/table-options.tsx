@@ -1,12 +1,12 @@
-import { ChevronDownIcon, GroupIcon, TrashIcon } from 'lucide-react'
+import { ChevronDownIcon, ReceiptTextIcon, TrashIcon } from 'lucide-react'
 
-import { type Category } from '@/features/category/api/use-get-categories'
+import { type Billing } from '@/features/billing/api/use-get-billings'
 
 import { useConfirm } from '@/hooks/use-confirm'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { useSelectedRows } from '@/hooks/use-selected-rows'
-import { useNewCategory } from '@/features/category/hooks/use-new-category'
-import { useBulkDeleteCategories } from '@/features/category/api/use-bulk-delete-categories'
+import { useNewBilling } from '@/features/billing/hooks/use-new-billing'
+import { useBulkDeleteBillings } from '@/features/billing/api/use-bulk-delete-billings'
 
 import {
   DropdownMenu,
@@ -19,9 +19,9 @@ import { Button } from '@/components/ui/button'
 import { ButtonLabel } from '@/components/button-label'
 
 export const SelectedOptions = () => {
-  const { selectedRows, reset } = useSelectedRows<Category>()
+  const { selectedRows, reset } = useSelectedRows<Billing>()
 
-  const bulkDelete = useBulkDeleteCategories()
+  const bulkDelete = useBulkDeleteBillings()
 
   const isPending = bulkDelete.isPending
 
@@ -75,7 +75,7 @@ export const SelectedOptions = () => {
 export const ActionOptions = () => {
   const isMobile = useIsMobile()
 
-  const { onOpen: onNewCategory } = useNewCategory()
+  const { onOpen: onNewBilling } = useNewBilling()
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
@@ -83,8 +83,8 @@ export const ActionOptions = () => {
         size={isMobile ? 'icon' : 'default'}
         hidden
         label="Criar"
-        icon={GroupIcon}
-        onClick={onNewCategory}
+        icon={ReceiptTextIcon}
+        onClick={onNewBilling}
       >
         {!isMobile && 'Adicionar'}
       </ButtonLabel>

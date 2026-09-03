@@ -8,6 +8,7 @@ import commmons from './common'
 
 import authenticate from './authenticate'
 
+import billing from './billing'
 import category from './category'
 
 const app = new Hono().basePath('/api')
@@ -20,6 +21,7 @@ const routes = app
 
   .route('/authenticate', authenticate)
 
+  .route('/billings', billing)
   .route('/categories', category)
 
 // @ts-ignor

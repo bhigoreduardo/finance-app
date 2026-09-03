@@ -1,6 +1,6 @@
 'use client'
 
-import { useGetCategories } from '@/features/category/api/use-get-categories'
+import { useGetBillings } from '@/features/billing/api/use-get-billings'
 
 import {
   TitleProtected as Title,
@@ -8,13 +8,13 @@ import {
 } from '@/components/title-custom'
 import { Skeleton } from '@/components/ui/skeleton'
 import { DataTableLoading } from '@/components/data-table'
-import { TableCategory } from '@/features/category/components/table-category'
+import { TableBilling } from '@/features/billing/components/table-billing'
 
-export default function CategoryPage() {
-  const categoriesQuery = useGetCategories()
-  const categories = categoriesQuery.data || []
+export default function BillingPage() {
+  const billingsQuery = useGetBillings()
+  const billings = billingsQuery.data || []
 
-  const isLoading = categoriesQuery.isLoading
+  const isLoading = billingsQuery.isLoading
 
   if (isLoading) {
     return (
@@ -34,10 +34,10 @@ export default function CategoryPage() {
     <section>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Title>Categorias</Title>
-          <SubTitle>Gerenciar as categorias de receitas e despesas</SubTitle>
+          <Title>Contas</Title>
+          <SubTitle>Gerenciar as contas de receitas e despesas</SubTitle>
         </div>
-        <TableCategory data={categories} />
+        <TableBilling data={billings} />
       </div>
     </section>
   )

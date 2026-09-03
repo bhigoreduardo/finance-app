@@ -8,6 +8,9 @@ import { FormDialogAuthenticatePassword } from '@/features/user/authenticate/com
 import { FormNewCategory } from '@/features/category/components/form-new-category'
 import { FormEditCategory } from '@/features/category/components/form-edit-category'
 
+import { FormNewBilling } from '@/features/billing/components/form-new-billing'
+import { FormEditBilling } from '@/features/billing/components/form-edit-billing'
+
 export const DialogProvider = () => {
   const isMounted = useMountedState()
 
@@ -20,6 +23,9 @@ export const DialogProvider = () => {
 
       <FormNewCategory />
       <FormEditCategory />
+
+      <FormNewBilling />
+      <FormEditBilling />
     </>
   )
 }

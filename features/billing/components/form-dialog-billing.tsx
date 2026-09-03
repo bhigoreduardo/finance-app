@@ -1,19 +1,19 @@
-import { InsertCategoryFormValues } from '@/features/category/schema'
+import { InsertBillingFormValues } from '@/features/billing/schema'
 
 import { FormDialog } from '@/components/form-dialog'
-import { FormCategory } from '@/features/category/components/form-category'
+import { FormBilling } from '@/features/billing/components/form-billing'
 
 type Props = {
   id?: string
   isOpen: boolean
   isPending: boolean
-  defaultValues: InsertCategoryFormValues
+  defaultValues: InsertBillingFormValues
   onDelete?: () => void
   handleClose: () => void
-  onSubmit: (values: InsertCategoryFormValues) => void
+  onSubmit: (values: InsertBillingFormValues) => void
 }
 
-export const FormDialogCategory = ({
+export const FormDialogBilling = ({
   id,
   isOpen,
   isPending,
@@ -22,19 +22,19 @@ export const FormDialogCategory = ({
   handleClose,
   onSubmit,
 }: Props) => {
-  const formId = 'form-category'
+  const formId = 'form-billing'
 
   return (
     <FormDialog
       formId={formId}
-      title={id ? 'Editar categoria' : 'Nova categoria'}
+      title={id ? 'Editar conta' : 'Nova conta'}
       description="Preencha os campos abaixo, e ao finalizar clique em “Salvar”."
       isOpen={isOpen}
       isPending={isPending}
       handleClose={handleClose}
       className="max-w-[90%] md:max-w-md"
     >
-      <FormCategory
+      <FormBilling
         id={id}
         formId={formId}
         isPending={isPending}
