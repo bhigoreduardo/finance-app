@@ -36,7 +36,7 @@ export const TitleMessage = ({ children }: { children: React.ReactNode }) => {
       <h3 className="text-base font-medium dark:text-white text-zinc-950">
         Olá, {user?.name} 👋
       </h3>
-      <p className="text-sm dark:text-gray-400 text-gray-700">{children}</p>
+      <p className="text-sm text-white">{children}</p>
     </div>
   )
 }
