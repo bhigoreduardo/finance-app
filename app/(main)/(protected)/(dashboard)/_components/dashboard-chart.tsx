@@ -4,6 +4,7 @@ import {
 } from '@/features/summary/api/use-get-summary'
 
 import { ChartVariant } from '@/components/chart/chart-variant'
+import { DonutVariant } from '@/components/chart/donut-variant'
 
 export const DashboardChart = () => {
   const { data } = useGetSummary()
@@ -30,26 +31,26 @@ export const DashboardChart = () => {
           },
         ]}
       />
-      {/* <DonutVariant
-        title="Mais vendidos"
-        data={mostSales}
+      <DonutVariant
+        title="Categorias"
+        data={categories}
         fields={
-          !!mostSales.length
+          !!categories.length
             ? [
-                ...mostSales.map((_, index) => ({
+                ...categories.map((_, index) => ({
                   key: `name`,
                   color: `var(--chart-${index})`,
                   label: 'Quantidade',
                 })),
                 {
-                  key: 'quantity',
+                  key: 'value',
                   color: 'var(--chart-1)',
                   label: 'Quantidade',
                 },
               ]
             : []
         }
-      /> */}
+      />
     </div>
   )
 }

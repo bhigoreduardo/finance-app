@@ -56,7 +56,7 @@ const Options = ({
 }) => {
   return (
     <Select defaultValue={type} onValueChange={cb}>
-      <SelectTrigger className="lg:w-auto h-9 rounded-md px-3">
+      <SelectTrigger>
         <SelectValue placeholder="Tipo do gráfico" />
       </SelectTrigger>
       <SelectContent>

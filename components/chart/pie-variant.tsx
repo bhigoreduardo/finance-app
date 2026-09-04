@@ -1,11 +1,9 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Label, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { Label, Pie, PieChart } from 'recharts'
 
 import { FILTER_NUMERIC_FIELDS } from '@/constants'
-
-import { useMediaQuery } from '@/hooks/use-media-query'
 
 import {
   type ChartConfig,
@@ -16,9 +14,6 @@ import {
 import { Badge } from '@/components/ui/badge'
 
 export const PieVariant = ({ data, fields }: VariantProps) => {
-  const isMobile = useMediaQuery('(min-width: 1024px)')
-  const height = isMobile ? 350 : undefined
-
   const dataKey = useMemo(() => {
     const numericField = fields.find((field) =>
       FILTER_NUMERIC_FIELDS.some((term) =>
@@ -97,68 +92,58 @@ export const PieVariant = ({ data, fields }: VariantProps) => {
 
   return (
     <div className="flex flex-col">
-      <ResponsiveContainer
-        width="100%"
-        height={height}
-        className="flex items-center justify-center"
-      >
-        <ChartContainer
-          config={customConfig}
-          className="mx-auto aspect-square max-h-62.5 w-full"
-        >
-          {!!data.length ? (
-            <PieChart>
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Pie
-                data={chartData}
-                dataKey={dataKey}
-                nameKey={nameKey}
-                innerRadius={60}
-                strokeWidth={5}
-              >
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                      return (
-                        <text
+      <ChartContainer config={customConfig} className="h-62.5 lg:h-100 w-full">
+        {!!data.length ? (
+          <PieChart>
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Pie
+              data={chartData}
+              dataKey={dataKey}
+              nameKey={nameKey}
+              innerRadius={60}
+              strokeWidth={5}
+            >
+              <Label
+                content={({ viewBox }) => {
+                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                    return (
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
+                          className="fill-foreground text-3xl font-bold"
                         >
-                          <tspan
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold"
-                          >
-                            {total.toLocaleString()}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground"
-                          >
-                            {fields.find((f) => f.key === dataKey)?.label ||
-                              dataKey.charAt(0).toUpperCase() +
-                                dataKey.slice(1)}
-                          </tspan>
-                        </text>
-                      )
-                    }
-                  }}
-                />
-              </Pie>
-            </PieChart>
-          ) : (
-            <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
-              Não foram encontrados dados para este período
-            </p>
-          )}
-        </ChartContainer>
-      </ResponsiveContainer>
+                          {total.toLocaleString()}
+                        </tspan>
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 24}
+                          className="fill-muted-foreground"
+                        >
+                          {fields.find((f) => f.key === dataKey)?.label ||
+                            dataKey.charAt(0).toUpperCase() + dataKey.slice(1)}
+                        </tspan>
+                      </text>
+                    )
+                  }
+                }}
+              />
+            </Pie>
+          </PieChart>
+        ) : (
+          <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
+            Não foram encontrados dados para este período
+          </p>
+        )}
+      </ChartContainer>
 
       {!!data.length && (
         <div className="flex flex-wrap gap-2 justify-center mx-auto">

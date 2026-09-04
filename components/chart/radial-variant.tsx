@@ -1,11 +1,9 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Label, RadialBar, RadialBarChart, ResponsiveContainer } from 'recharts'
+import { Label, RadialBar, RadialBarChart } from 'recharts'
 
 import { FILTER_NUMERIC_FIELDS } from '@/constants'
-
-import { useMediaQuery } from '@/hooks/use-media-query'
 
 import {
   type ChartConfig,
@@ -16,9 +14,6 @@ import {
 import { Badge } from '@/components/ui/badge'
 
 export const RadialVariant = ({ data, fields }: VariantProps) => {
-  const isMobile = useMediaQuery('(min-width: 1024px)')
-  const height = isMobile ? 350 : undefined
-
   // TODO: Problema do label nesse dataKey
   const dataKey = useMemo(() => {
     const numericField = fields.find((field) =>
@@ -98,60 +93,55 @@ export const RadialVariant = ({ data, fields }: VariantProps) => {
 
   return (
     <div className="flex flex-col">
-      <ResponsiveContainer width="100%" height={height}>
-        <ChartContainer
-          config={customConfig}
-          className="mx-auto aspect-square max-h-62.5 w-full"
-        >
-          {!!data.length ? (
-            <RadialBarChart
-              data={chartData}
-              innerRadius={60}
-              outerRadius={140}
-              startAngle={90}
-              endAngle={-270}
-            >
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
+      <ChartContainer config={customConfig} className="h-62.5 lg:h-100 w-full">
+        {!!data.length ? (
+          <RadialBarChart
+            data={chartData}
+            innerRadius={60}
+            outerRadius={140}
+            startAngle={90}
+            endAngle={-270}
+          >
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
 
-              <RadialBar dataKey={dataKey} background cornerRadius={6}>
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                      return (
-                        <text
+            <RadialBar dataKey={dataKey} background cornerRadius={6}>
+              <Label
+                content={({ viewBox }) => {
+                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                    return (
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan className="fill-foreground text-3xl font-bold">
+                          {total.toLocaleString()}
+                        </tspan>
+                        <tspan
                           x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
+                          dy={24}
+                          className="fill-muted-foreground"
                         >
-                          <tspan className="fill-foreground text-3xl font-bold">
-                            {total.toLocaleString()}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            dy={24}
-                            className="fill-muted-foreground"
-                          >
-                            {fields.find((f) => f.key === dataKey)?.label ||
-                              dataKey}
-                          </tspan>
-                        </text>
-                      )
-                    }
-                  }}
-                />
-              </RadialBar>
-            </RadialBarChart>
-          ) : (
-            <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
-              Não foram encontrados dados para este período
-            </p>
-          )}
-        </ChartContainer>
-      </ResponsiveContainer>
+                          {fields.find((f) => f.key === dataKey)?.label ||
+                            dataKey}
+                        </tspan>
+                      </text>
+                    )
+                  }
+                }}
+              />
+            </RadialBar>
+          </RadialBarChart>
+        ) : (
+          <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
+            Não foram encontrados dados para este período
+          </p>
+        )}
+      </ChartContainer>
 
       {!!data.length && (
         <div className="flex flex-wrap gap-2 justify-center mx-auto">
