@@ -1,18 +1,9 @@
 'use client'
 
-import {
-  Line,
-  LineChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from 'recharts'
 import { useState } from 'react'
 import { ptBR } from 'date-fns/locale'
 import { format, isValid, parseISO } from 'date-fns'
-
-import { useMediaQuery } from '@/hooks/use-media-query'
+import { Line, LineChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import {
   type ChartConfig,
@@ -26,9 +17,6 @@ export const LinearVariant = ({ data, fields }: VariantProps) => {
   const [activeFields, setActiveFields] = useState<string[]>(
     fields.map((field) => field.key),
   )
-
-  const isMobile = useMediaQuery('(min-width: 1024px)')
-  const height = isMobile ? 350 : undefined
 
   const customConfig = fields.reduce((acc, field) => {
     acc[field.key] = {
@@ -66,86 +54,80 @@ export const LinearVariant = ({ data, fields }: VariantProps) => {
 
   return (
     <div className="flex flex-col">
-      <ResponsiveContainer
-        width="100%"
-        height={height}
-        className="flex items-center justify-center"
-      >
-        <ChartContainer config={customConfig} className="w-full h-full">
-          {!!data.length ? (
-            <LineChart
-              accessibilityLayer
-              data={data}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="date"
-                tickFormatter={formatDate}
-                style={{ fontSize: '12px' }}
-                tickLine={false}
-                tickMargin={8}
-                axisLine={false}
-              />
-              <YAxis domain={[0, maxValue * 1.1]} hide={true} />
-              <ChartTooltip
-                cursor={false}
-                content={
-                  <ChartTooltipContent
-                    indicator="dot"
-                    labelFormatter={(label, payload) => {
-                      try {
-                        const dateStr = payload?.[0]?.payload?.date
-                        if (dateStr) {
-                          const date = parseISO(dateStr)
-                          if (isValid(date)) {
-                            return format(date, 'dd/MM/yyyy', {
-                              locale: ptBR,
-                            })
-                          }
+      <ChartContainer config={customConfig} className="h-62.5 lg:h-100 w-full">
+        {!!data.length ? (
+          <LineChart
+            accessibilityLayer
+            data={data}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickFormatter={formatDate}
+              style={{ fontSize: '12px' }}
+              tickLine={false}
+              tickMargin={8}
+              axisLine={false}
+            />
+            <YAxis domain={[0, maxValue * 1.1]} hide={true} />
+            <ChartTooltip
+              cursor={false}
+              content={
+                <ChartTooltipContent
+                  indicator="dot"
+                  labelFormatter={(label, payload) => {
+                    try {
+                      const dateStr = payload?.[0]?.payload?.date
+                      if (dateStr) {
+                        const date = parseISO(dateStr)
+                        if (isValid(date)) {
+                          return format(date, 'dd/MM/yyyy', {
+                            locale: ptBR,
+                          })
                         }
-                        return label
-                      } catch {
-                        return label
                       }
-                    }}
-                  />
-                }
-              />
-              {fields
-                .filter((field) => activeFields.includes(field.key))
-                .map((field) => (
-                  <Line
-                    key={field.key}
-                    type="linear"
-                    dataKey={field.key}
-                    strokeWidth={2}
-                    stroke={field.color}
-                    dot={{
-                      fill: field.color,
-                      strokeWidth: 2,
-                      r: 4,
-                      stroke: 'white',
-                    }}
-                    activeDot={{
-                      r: 6,
-                      fill: field.color,
-                      stroke: 'white',
-                      strokeWidth: 2,
-                    }}
-                  />
-                ))}
-            </LineChart>
-          ) : (
-            <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
-              Não foram encontrados dados para este período
-            </p>
-          )}
-        </ChartContainer>
-      </ResponsiveContainer>
+                      return label
+                    } catch {
+                      return label
+                    }
+                  }}
+                />
+              }
+            />
+            {fields
+              .filter((field) => activeFields.includes(field.key))
+              .map((field) => (
+                <Line
+                  key={field.key}
+                  type="linear"
+                  dataKey={field.key}
+                  strokeWidth={2}
+                  stroke={field.color}
+                  dot={{
+                    fill: field.color,
+                    strokeWidth: 2,
+                    r: 4,
+                    stroke: 'white',
+                  }}
+                  activeDot={{
+                    r: 6,
+                    fill: field.color,
+                    stroke: 'white',
+                    strokeWidth: 2,
+                  }}
+                />
+              ))}
+          </LineChart>
+        ) : (
+          <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
+            Não foram encontrados dados para este período
+          </p>
+        )}
+      </ChartContainer>
 
       {!!data.length && (
         <div className="sm:flex items-center justify-center flex-wrap gap-1 hidden mx-auto">

@@ -2,6 +2,7 @@ import {
   type Summary,
   useGetSummary,
 } from '@/features/summary/api/use-get-summary'
+
 import { ChartVariant } from '@/components/chart/chart-variant'
 
 export const DashboardChart = () => {

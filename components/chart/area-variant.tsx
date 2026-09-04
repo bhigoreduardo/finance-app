@@ -1,18 +1,9 @@
 'use client'
 
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from 'recharts'
 import { useState } from 'react'
 import { ptBR } from 'date-fns/locale'
 import { format, isValid, parseISO } from 'date-fns'
-
-import { useMediaQuery } from '@/hooks/use-media-query'
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import {
   ChartConfig,
@@ -27,9 +18,6 @@ export const AreaVariant = ({ data, fields }: VariantProps) => {
     fields.map((field) => field.key),
   )
 
-  const isMobile = useMediaQuery('(min-width: 1024px)')
-  const height = isMobile ? 350 : undefined
-
   const customConfig = fields.reduce((acc, field) => {
     acc[field.key] = {
       label: field.label,
@@ -37,6 +25,8 @@ export const AreaVariant = ({ data, fields }: VariantProps) => {
     }
     return acc
   }, {} as ChartConfig)
+
+  console.log({ data, customConfig })
 
   const toggleFieldVisibility = (key: string) => {
     setActiveFields((prev) =>
@@ -66,101 +56,91 @@ export const AreaVariant = ({ data, fields }: VariantProps) => {
 
   return (
     <div className="flex flex-col">
-      <ResponsiveContainer
-        width="100%"
-        height={height}
-        className="flex items-center justify-center"
-      >
-        <ChartContainer config={customConfig} className="w-full h-full">
-          {!!data.length ? (
-            <AreaChart
-              accessibilityLayer
-              data={data}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-            >
-              <defs>
-                {fields.map((field) => (
-                  <linearGradient
-                    key={field.key}
-                    id={field.key}
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop
-                      offset="5%"
-                      stopColor={field.color}
-                      stopOpacity={0.8}
-                    />
-                    <stop
-                      offset="95%"
-                      stopColor={field.color}
-                      stopOpacity={0.1}
-                    />
-                  </linearGradient>
-                ))}
-              </defs>
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="date"
-                tickFormatter={formatDate}
-                style={{ fontSize: '12px' }}
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-              />
-              <YAxis domain={[0, maxValue * 1.1]} hide={true} />
-              <ChartTooltip
-                cursor={false}
-                content={
-                  <ChartTooltipContent
-                    indicator="dot"
-                    labelFormatter={(label, payload) => {
-                      try {
-                        const dateStr = payload?.[0]?.payload?.date
-                        if (dateStr) {
-                          const date = parseISO(dateStr)
-                          if (isValid(date)) {
-                            return format(date, 'dd/MM/yyyy', {
-                              locale: ptBR,
-                            })
-                          }
+      <ChartContainer config={customConfig} className="h-62.5 lg:h-100 w-full">
+        {!!data.length ? (
+          <AreaChart
+            accessibilityLayer
+            data={data}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+          >
+            <defs>
+              {fields.map((field) => (
+                <linearGradient
+                  key={field.key}
+                  id={field.key}
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop offset="5%" stopColor={field.color} stopOpacity={0.8} />
+                  <stop
+                    offset="95%"
+                    stopColor={field.color}
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+              ))}
+            </defs>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickFormatter={formatDate}
+              style={{ fontSize: '12px' }}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+            />
+            <YAxis domain={[0, maxValue * 1.1]} hide={true} />
+            <ChartTooltip
+              cursor={false}
+              content={
+                <ChartTooltipContent
+                  indicator="dot"
+                  labelFormatter={(label, payload) => {
+                    try {
+                      const dateStr = payload?.[0]?.payload?.date
+                      if (dateStr) {
+                        const date = parseISO(dateStr)
+                        if (isValid(date)) {
+                          return format(date, 'dd/MM/yyyy', {
+                            locale: ptBR,
+                          })
                         }
-                        return label
-                      } catch {
-                        return label
                       }
-                    }}
-                  />
-                }
-              />
-              {fields
-                .filter((field) => activeFields.includes(field.key))
-                .map((field) => (
-                  <Area
-                    key={field.key}
-                    type="monotone"
-                    dataKey={field.key}
-                    stackId={field.key}
-                    strokeWidth={2}
-                    stroke={field.color}
-                    fill={`url(#${field.key})`}
-                    fillOpacity={0.4}
-                    className="drop-shadow-sm"
-                  />
-                ))}
-            </AreaChart>
-          ) : (
-            <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
-              Não foram encontrados dados para este período
-            </p>
-          )}
-        </ChartContainer>
-      </ResponsiveContainer>
+                      return label
+                    } catch {
+                      return label
+                    }
+                  }}
+                />
+              }
+            />
+            {fields
+              .filter((field) => activeFields.includes(field.key))
+              .map((field) => (
+                <Area
+                  key={field.key}
+                  type="monotone"
+                  dataKey={field.key}
+                  stackId={field.key}
+                  strokeWidth={2}
+                  stroke={field.color}
+                  fill={`url(#${field.key})`}
+                  fillOpacity={0.4}
+                  className="drop-shadow-sm"
+                />
+              ))}
+          </AreaChart>
+        ) : (
+          <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
+            Não foram encontrados dados para este período
+          </p>
+        )}
+      </ChartContainer>
 
       {!!data.length && (
         <div className="sm:flex items-center justify-center hidden flex-wrap gap-1 mx-auto">
