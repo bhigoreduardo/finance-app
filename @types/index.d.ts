@@ -12,3 +12,7 @@ declare type VariantProps = {
   }[]
   fields: DataField[]
 }
+
+declare type RangeValue = '1D' | '7D' | '30D' | '90D' | 'CUSTOM'
+
+declare type ChartVariantType = 'AREA' | 'BAR' | 'LINEAR' | 'PIE' | 'RADIAL'

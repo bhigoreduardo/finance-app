@@ -161,7 +161,7 @@ const app = new Hono().get(
       finalCategories.push({ name: 'other', value: otherSum })
     }
 
-    const filledDays = fillMissingDays(days, startDate, endDate)
+    const filledDays = fillMissingDays(days, startDate, endDate) as DayItem[]
 
     return c.json({
       data: {

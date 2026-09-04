@@ -1,11 +1,6 @@
-import {
-  CalendarIcon,
-  PiggyBankIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
-} from 'lucide-react'
+import { PiggyBankIcon, TrendingUpIcon, TrendingDownIcon } from 'lucide-react'
 
-import { formatCurrency, formatPercentage } from '@/lib/utils'
+import { formatDateRange, formatPercentage } from '@/lib/utils'
 
 import {
   type Summary,
@@ -16,15 +11,16 @@ import { useFilterSummary } from '@/features/summary/hooks/use-filter-summary'
 import {
   type Props as CardOverviewProps,
   CardOverview,
+  CardOverviewLoading,
 } from '@/components/card-overview'
 
-import { Card, CardContent } from '@/components/ui/card'
-
 export const DashboardSummary = () => {
-  const { data, isLoading } = useGetSummary()
+  const { data } = useGetSummary()
   const { from, to } = useFilterSummary()
 
   if (!data) return null
+
+  const dateRangeLabel = formatDateRange({ to, from })
 
   const {
     remainingAmount,
@@ -43,6 +39,7 @@ export const DashboardSummary = () => {
       subtitle: `${formatPercentage(remainingChange, { addPrefix: true })} no período`,
       icon: PiggyBankIcon,
       variant: 'default',
+      dateRange: dateRangeLabel,
     },
     {
       title: 'Receitas',
@@ -51,6 +48,7 @@ export const DashboardSummary = () => {
       subtitle: `${formatPercentage(incomeChange, { addPrefix: true })} no período`,
       icon: TrendingUpIcon,
       variant: 'success',
+      dateRange: dateRangeLabel,
     },
     {
       title: 'Despesas',
@@ -59,6 +57,7 @@ export const DashboardSummary = () => {
       subtitle: `${formatPercentage(expensesChange, { addPrefix: true })} no período`,
       icon: TrendingDownIcon,
       variant: 'danger',
+      dateRange: dateRangeLabel,
     },
   ]
 
@@ -69,7 +68,6 @@ export const DashboardSummary = () => {
           <CardOverview key={index} {...overview} />
         ))}
       </div>
-      <div className="grid lg:grid-cols-4 flex-1 items-center gap-4 sm:w-fit w-full"></div>
     </div>
   )
 }

@@ -57,6 +57,7 @@ export type Props = BoxVariants &
     description: string
     value?: string | number
     icon: LucideIcon
+    dateRange: string
   }
 
 export const CardOverview = ({
@@ -66,6 +67,7 @@ export const CardOverview = ({
   description,
   value,
   icon: Icon,
+  dateRange,
 }: Props) => {
   return (
     <Card className="gap-0 p-2 rounded-sm">
@@ -89,35 +91,38 @@ export const CardOverview = ({
           <Icon className={cn(iconVariant({ variant }))} />
         </div>
       </CardHeader>
-      <CardContent className="p-0">
-        {value ? (
-          <>
-            <p className="text-sm">
-              {typeof value === 'number' ? (
-                <CountUp
-                  preserveValue
-                  start={0}
-                  end={value}
-                  decimals={2}
-                  decimalPlaces={2}
-                  formattingFn={formatCurrency}
-                />
-              ) : (
-                value
-              )}
-            </p>
-            <CardDescription className="text-xs text-muted-foreground line-clamp-1">
-              {subtitle}
-            </CardDescription>
-          </>
-        ) : (
-          <>
-            <p className="text-sm text-muted-foreground">Sem resultados</p>
-            <span className="text-xs text-muted-foreground line-clamp-1">
-              -
-            </span>
-          </>
-        )}
+      <CardContent className="p-0 flex-row justify-between items-center">
+        <div className="space-y-1">
+          {value ? (
+            <>
+              <p className="text-sm">
+                {typeof value === 'number' ? (
+                  <CountUp
+                    preserveValue
+                    start={0}
+                    end={value}
+                    decimals={2}
+                    decimalPlaces={2}
+                    formattingFn={formatCurrency}
+                  />
+                ) : (
+                  value
+                )}
+              </p>
+              <CardDescription className="text-xs text-muted-foreground line-clamp-1">
+                {subtitle}
+              </CardDescription>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-muted-foreground">Sem resultados</p>
+              <span className="text-xs text-muted-foreground line-clamp-1">
+                -
+              </span>
+            </>
+          )}
+        </div>
+        <span className="text-xs text-muted-foreground">{dateRange}</span>
       </CardContent>
     </Card>
   )
@@ -126,13 +131,19 @@ export const CardOverview = ({
 export const CardOverviewLoading = () => {
   return (
     <Card className="gap-0 p-2 rounded-sm">
-      <CardHeader className="flex items-center justify-between px-0">
-        <Skeleton className="h-4 w-18" />
+      <CardHeader className="flex items-center justify-between p-0">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-4 w-18" />
+          <Skeleton className="size-5 rounded-full" />
+        </div>
         <Skeleton className="size-9" />
       </CardHeader>
-      <CardContent className="px-0 gap-1 flex flex-col">
-        <Skeleton className="shrink-0 size-5" />
-        <Skeleton className="shrink-0 h-4 w-30" />
+      <CardContent className="p-0 flex-row justify-between items-center">
+        <div className="space-y-1">
+          <Skeleton className="h-4 w-18" />
+          <Skeleton className="h-4 w-27" />
+        </div>
+        <Skeleton className="h-4 w-28.5" />
       </CardContent>
     </Card>
   )
