@@ -5,7 +5,7 @@ import {
   TrendingDownIcon,
 } from 'lucide-react'
 
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, formatPercentage } from '@/lib/utils'
 
 import {
   type Summary,
@@ -38,25 +38,25 @@ export const DashboardSummary = () => {
   const overviews: CardOverviewProps[] = [
     {
       title: 'Restante',
-      value: remainingAmount ? formatCurrency(remainingAmount) : undefined,
+      value: remainingAmount ? remainingAmount : undefined,
       description: 'Total de pedidos entregues',
-      subtitle: `${remainingChange}`,
+      subtitle: `${formatPercentage(remainingChange, { addPrefix: true })} no período`,
       icon: PiggyBankIcon,
       variant: 'default',
     },
     {
       title: 'Receitas',
-      value: incomeAmount ? `${formatCurrency(incomeAmount)}` : undefined,
+      value: incomeAmount ? incomeAmount : undefined,
       description: 'Total de receitas',
-      subtitle: `${incomeChange}`,
+      subtitle: `${formatPercentage(incomeChange, { addPrefix: true })} no período`,
       icon: TrendingUpIcon,
       variant: 'success',
     },
     {
       title: 'Despesas',
-      value: expensesAmount ? `${formatCurrency(expensesAmount)}` : undefined,
+      value: expensesAmount ? expensesAmount : undefined,
       description: 'Total de despesas',
-      subtitle: `${expensesChange}`,
+      subtitle: `${formatPercentage(expensesChange, { addPrefix: true })} no período`,
       icon: TrendingDownIcon,
       variant: 'danger',
     },

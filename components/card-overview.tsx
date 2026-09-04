@@ -22,7 +22,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 const boxVariant = cva('rounded-sm p-2', {
   variants: {
     variant: {
-      default: 'bg-primary-500/20',
+      default: 'bg-blue-500/20',
       success: 'bg-green-500/20',
       danger: 'bg-red-500/20',
       warning: 'bg-yellow-500/20',
@@ -36,7 +36,7 @@ const boxVariant = cva('rounded-sm p-2', {
 const iconVariant = cva('size-4', {
   variants: {
     variant: {
-      default: 'text-primary-500',
+      default: 'text-blue-500',
       success: 'text-green-500',
       danger: 'text-red-500',
       warning: 'text-yellow-500',
