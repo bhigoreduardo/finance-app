@@ -12,6 +12,8 @@ import billing from './billing'
 import category from './category'
 import transaction from './transaction'
 
+import summary from './summary'
+
 const app = new Hono().basePath('/api')
 
 app.use('*', initAuthConfig(getAuthConfig))
@@ -25,6 +27,8 @@ const routes = app
   .route('/billings', billing)
   .route('/categories', category)
   .route('/transactions', transaction)
+
+  .route('/summaries', summary)
 
 // @ts-ignor
 function getAuthConfig(): AuthConfig {
