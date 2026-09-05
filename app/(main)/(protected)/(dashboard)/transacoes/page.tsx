@@ -1,5 +1,6 @@
 'use client'
 
+import { useNewTransaction } from '@/features/transaction/hooks/use-new-transaction'
 import { useGetTransactions } from '@/features/transaction/api/use-get-transactions'
 
 import {
@@ -9,8 +10,10 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { DataTableLoading } from '@/components/data-table'
 import { TableTransaction } from '@/features/transaction/components/table-transaction'
+import { ImportTransaction } from '@/features/transaction/components/import-transaction'
 
 export default function TransactionPage() {
+  const { variant } = useNewTransaction()
   const transactionsQuery = useGetTransactions()
   const transactions = transactionsQuery.data || []
 
@@ -37,7 +40,11 @@ export default function TransactionPage() {
           <Title>Transações</Title>
           <SubTitle>Gerenciar as transações de receitas e despesas</SubTitle>
         </div>
-        <TableTransaction data={transactions} />
+        {variant === 'TABLE' ? (
+          <TableTransaction data={transactions} />
+        ) : (
+          <ImportTransaction />
+        )}
       </div>
     </section>
   )

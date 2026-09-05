@@ -40,8 +40,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { SelectFilter } from '@/components/select-filter'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
-type View = 'TABLE' | 'GRID'
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
