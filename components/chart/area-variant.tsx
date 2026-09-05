@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { ptBR } from 'date-fns/locale'
+import { FileSearchIcon } from 'lucide-react'
 import { format, isValid, parseISO } from 'date-fns'
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
@@ -56,8 +57,11 @@ export const AreaVariant = ({ data, fields }: VariantProps) => {
 
   return (
     <div className="flex flex-col">
-      <ChartContainer config={customConfig} className="h-62.5 lg:h-100 w-full">
-        {!!data.length ? (
+      {!!data.length ? (
+        <ChartContainer
+          config={customConfig}
+          className="h-62.5 lg:h-100 w-full"
+        >
           <AreaChart
             accessibilityLayer
             data={data}
@@ -135,12 +139,13 @@ export const AreaVariant = ({ data, fields }: VariantProps) => {
                 />
               ))}
           </AreaChart>
-        ) : (
-          <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
-            Não foram encontrados dados para este período
-          </p>
-        )}
-      </ChartContainer>
+        </ChartContainer>
+      ) : (
+        <div className="h-62.5 lg:h-100 w-full flex items-center justify-center text-center text-sm text-muted-foreground">
+          <FileSearchIcon className="size-5 text-muted-foreground mr-2" />
+          Não foram encontrados dados para este período
+        </div>
+      )}
 
       {!!data.length && (
         <div className="sm:flex items-center justify-center hidden flex-wrap gap-1 mx-auto">
@@ -152,7 +157,7 @@ export const AreaVariant = ({ data, fields }: VariantProps) => {
               className="flex items-center gap-1 cursor-pointer"
             >
               <div
-                className="size-2 shrink-0 rounded-[2px]"
+                className="size-2 shrink-0 rounded-xs"
                 style={{
                   backgroundColor: field.color,
                 }}

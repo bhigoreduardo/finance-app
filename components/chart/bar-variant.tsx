@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { ptBR } from 'date-fns/locale'
+import { FileSearchIcon } from 'lucide-react'
 import { format, isValid, parseISO } from 'date-fns'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
@@ -46,8 +47,11 @@ export const BarVariant = ({ data, fields }: VariantProps) => {
 
   return (
     <div className="flex flex-col">
-      <ChartContainer config={customConfig} className="h-62.5 lg:h-100 w-full">
-        {!!data.length ? (
+      {!!data.length ? (
+        <ChartContainer
+          config={customConfig}
+          className="h-62.5 lg:h-100 w-full"
+        >
           <BarChart accessibilityLayer data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
@@ -93,12 +97,13 @@ export const BarVariant = ({ data, fields }: VariantProps) => {
                 />
               ))}
           </BarChart>
-        ) : (
-          <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
-            Não foram encontrados dados para este período
-          </p>
-        )}
-      </ChartContainer>
+        </ChartContainer>
+      ) : (
+        <div className="h-62.5 lg:h-100 w-full flex items-center justify-center text-center text-sm text-muted-foreground">
+          <FileSearchIcon className="size-5 text-muted-foreground mr-2" />
+          Não foram encontrados dados para este período
+        </div>
+      )}
 
       {!!data.length && (
         <div className="sm:flex items-center justify-center flex-wrap gap-1 hidden mx-auto">
@@ -110,7 +115,7 @@ export const BarVariant = ({ data, fields }: VariantProps) => {
               className="flex items-center gap-1 cursor-pointer"
             >
               <div
-                className="h-2 w-2 shrink-0 rounded-[2px]"
+                className="h-2 w-2 shrink-0 rounded-xs"
                 style={{
                   backgroundColor: field.color,
                 }}

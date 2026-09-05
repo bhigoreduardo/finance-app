@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { FileSearchIcon } from 'lucide-react'
 import { Label, RadialBar, RadialBarChart } from 'recharts'
 
 import { FILTER_NUMERIC_FIELDS } from '@/constants'
@@ -93,8 +94,11 @@ export const RadialVariant = ({ data, fields }: VariantProps) => {
 
   return (
     <div className="flex flex-col">
-      <ChartContainer config={customConfig} className="h-62.5 lg:h-100 w-full">
-        {!!data.length ? (
+      {!!data.length ? (
+        <ChartContainer
+          config={customConfig}
+          className="h-62.5 lg:h-100 w-full"
+        >
           <RadialBarChart
             data={chartData}
             innerRadius={60}
@@ -136,12 +140,13 @@ export const RadialVariant = ({ data, fields }: VariantProps) => {
               />
             </RadialBar>
           </RadialBarChart>
-        ) : (
-          <p className="h-full w-full flex items-center justify-center text-center text-sm text-muted-foreground">
-            Não foram encontrados dados para este período
-          </p>
-        )}
-      </ChartContainer>
+        </ChartContainer>
+      ) : (
+        <div className="h-62.5 lg:h-100 w-full flex items-center justify-center text-center text-sm text-muted-foreground">
+          <FileSearchIcon className="size-5 text-muted-foreground mr-2" />
+          Não foram encontrados dados para este período
+        </div>
+      )}
 
       {!!data.length && (
         <div className="flex flex-wrap gap-2 justify-center mx-auto">
@@ -152,7 +157,7 @@ export const RadialVariant = ({ data, fields }: VariantProps) => {
               className="flex items-center gap-2 cursor-default"
             >
               <div
-                className="size-2 shrink-0 rounded-[2px]"
+                className="size-2 shrink-0 rounded-xs"
                 style={{
                   backgroundColor: badge.color,
                 }}
