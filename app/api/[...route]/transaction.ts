@@ -33,6 +33,28 @@ const app = new Hono()
     },
   )
   .post(
+    '/bulk-create',
+    verifyAuth(),
+    userAuthenticate(),
+    zValidator('json', z.array(insertTransactionSchema)),
+    async (c) => {
+      const { authId } = c.get('userAuthenticate')
+
+      const validatedFields = c.req.valid('json')
+      if (!validatedFields) return c.json({ error: 'Campos inválidos' }, 400)
+
+      await db.transaction.createMany({
+        data: validatedFields.map((item) => ({
+          ...item,
+          id: createId(),
+          userId: authId,
+        })),
+      })
+
+      return c.json({ success: 'Transações criadas' }, 201)
+    },
+  )
+  .post(
     '/bulk-delete',
     verifyAuth(),
     userAuthenticate(),
