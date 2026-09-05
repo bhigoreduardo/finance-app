@@ -5,6 +5,7 @@ import { convertAmountToMiliunits } from '@/lib/utils'
 
 import { useIsMobile } from '@/hooks/use-mobile'
 import { useColumnMapping } from '@/hooks/use-column-mapping'
+import { useTransaction } from '@/features/transaction/hooks/use-transaction'
 import { useNewTransaction } from '@/features/transaction/hooks/use-new-transaction'
 import { useBulkCreateTransactions } from '@/features/transaction/api/use-bulk-create-transactions'
 
@@ -24,8 +25,9 @@ export const ActionOptions = ({
 }) => {
   const isMobile = useIsMobile()
 
-  const { selectedColumns } = useColumnMapping()
   const { onChange } = useNewTransaction()
+  const { selectedColumns } = useColumnMapping()
+  const [ConfirmationDialog, confirm] = useTransaction()
 
   const bulkCreate = useBulkCreateTransactions()
 
@@ -35,7 +37,7 @@ export const ActionOptions = ({
     onChange('TABLE', undefined)
   }
 
-  const onContinue = () => {
+  const onContinue = async () => {
     const getColumnIndex = (column: string) => column.split('_')[1]
 
     const mappedHeaders = headers.map((_, index) => {
@@ -62,8 +64,11 @@ export const ActionOptions = ({
       }, {}),
     )
 
+    const extraFields = await confirm()
+
     const formattedData = arrayOfData.map((item) => ({
       ...item,
+      ...extraFields,
       amount: convertAmountToMiliunits(parseFloat(item.amount)),
       dueDate: item.dueDate
         ? format(parse(item.dueDate, dateFormat, new Date()), outputFormat)
@@ -77,6 +82,7 @@ export const ActionOptions = ({
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
+      <ConfirmationDialog />
       <ButtonLabel
         size={isMobile ? 'icon' : 'default'}
         hidden
