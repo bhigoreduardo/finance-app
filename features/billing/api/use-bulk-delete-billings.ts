@@ -41,6 +41,7 @@ export const useBulkDeleteBillings = () => {
         toast.success(res.success)
       }
       queryClient.invalidateQueries({ queryKey: ['billings'] })
+      queryClient.invalidateQueries({ queryKey: ['summaries'] })
     },
     onError: (err) => {
       toast.error(err.message)

@@ -42,6 +42,8 @@ export const useEditBilling = (id?: string) => {
         toast.success(res.success)
       }
       queryClient.invalidateQueries({ queryKey: ['billings'] })
+      queryClient.invalidateQueries({ queryKey: ['summaries'] })
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
     },
     onError: (err) => {
       toast.error(err.message)

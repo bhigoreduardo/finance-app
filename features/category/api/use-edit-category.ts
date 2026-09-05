@@ -42,6 +42,8 @@ export const useEditCategory = (id?: string) => {
         toast.success(res.success)
       }
       queryClient.invalidateQueries({ queryKey: ['categories'] })
+      queryClient.invalidateQueries({ queryKey: ['summaries'] })
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
     },
     onError: (err) => {
       toast.error(err.message)
